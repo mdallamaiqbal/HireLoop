@@ -10,14 +10,18 @@ import {
   Label,
   Switch, 
   Alert,
-  Button
+  Button,
+  toast
 } from "@heroui/react";
 
 // Gravity UI Icons imports
 import { ArrowLeft, Globe, Briefcase, Calendar, CircleDollar } from "@gravity-ui/icons";
+import { createJob } from "@/app/lib/actions/job";
+import { redirect } from "next/navigation";
 
 export default function NewJobPostPage() {
   const [companyContext, setCompanyContext] = useState({
+    id: "mock-company-123",
     name: "Acme Corp",
     isApproved: true,
     plan: "Growth", 
@@ -36,6 +40,7 @@ export default function NewJobPostPage() {
     e.preventDefault();
     setFormErrors({});
     setSuccessMessage("");
+    const form = e.currentTarget;
 
     if (!canPostJob) {
       setFormErrors({ global: "Your company has reached its plan's active job limit or is not approved yet." });
@@ -45,17 +50,21 @@ export default function NewJobPostPage() {
     const formData = new FormData(e.currentTarget);
     const data = Object.fromEntries(formData.entries());
     
-    data.isRemote = isRemote;
-    data.companyId = "company_abc123"; 
-    data.status = "active";
-
-    // 🚀 Console logging the structured form data upon submission
-    console.log("Form Submitted Data:", {
+    const payload={
       ...data,
-      category: e.currentTarget.elements.category?.value,
-      jobType: e.currentTarget.elements.jobType?.value,
-      currency: e.currentTarget.elements.currency?.value,
-    });
+      isRemote,
+      companyId:companyContext.id,
+      status: "active",
+      isPubliclyVisible: true,
+    }
+
+    const res = await createJob(payload);
+    if(res.insertedId){
+      toast.success("Job Posted Successfully");
+      form.reset();
+      setIsRemote(false);
+      redirect("/dashboard/recruiter/jobs");
+    }
 
     if (!data.jobTitle) {
       setFormErrors({ global: "Please fill out all required fields." });
