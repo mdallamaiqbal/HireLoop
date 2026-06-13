@@ -24,26 +24,31 @@ export default function JobsTable({ jobs = [] }) {
       <Table.ResizableContainer>
         <Table.Content aria-label="Jobs data list" className="min-w-[850px]">
           <Table.Header>
-            <Table.Column isRowHeader defaultWidth="1.8fr" id="jobTitle" minWidth={200} aria-label="Job Title Column">
-              Job Title / Location
+            {/* 1. Job Title Column */}
+            <Table.Column isRowHeader defaultWidth="2fr" id="jobTitle" minWidth={200} aria-label="Job Title Column">
+              Job Title
               <Table.ColumnResizer />
             </Table.Column>
-            <Table.Column defaultWidth="1fr" id="category" minWidth={130} aria-label="Category Column">
-              Category
+            
+            {/* 2. Type / Category Column */}
+            <Table.Column defaultWidth="1.2fr" id="typeCategory" minWidth={150} aria-label="Type and Category Column">
+              Type / Category
               <Table.ColumnResizer />
             </Table.Column>
-            <Table.Column defaultWidth="1fr" id="jobType" minWidth={120} aria-label="Job Type Column">
-              Type
+            
+            {/* 3. Location Column */}
+            <Table.Column defaultWidth="1.2fr" id="location" minWidth={140} aria-label="Location Column">
+              Location
               <Table.ColumnResizer />
             </Table.Column>
-            <Table.Column defaultWidth="1.2fr" id="salary" minWidth={140} aria-label="Salary Column">
-              Salary Range
-              <Table.ColumnResizer />
-            </Table.Column>
+            
+            {/* 4. Status Column */}
             <Table.Column defaultWidth="1fr" id="status" minWidth={100} aria-label="Status Column">
               Status
               <Table.ColumnResizer />
             </Table.Column>
+            
+            {/* 5. Actions Column */}
             <Table.Column defaultWidth="1.2fr" id="actions" minWidth={160} aria-label="Actions Column">
               Actions
             </Table.Column>
@@ -55,44 +60,46 @@ export default function JobsTable({ jobs = [] }) {
 
               return (
                 <Table.Row key={jobId}>
+                  {/* 1. Job Title Cell */}
                   <Table.Cell>
-                    <div className="flex flex-col gap-1">
-                      <span className="font-medium text-default-800">{job.jobTitle}</span>
-                      
-                      {/* Dynamically handle Remote vs Location data */}
-                      {job.isRemote ? (
-                        <span className="text-xs text-primary font-medium bg-primary-50 px-1.5 py-0.5 rounded w-fit">
-                          Remote
-                        </span>
-                      ) : (
-                        <span className="text-xs text-default-500 font-normal">
-                          {job.location || "On-site"}
-                        </span>
-                      )}
+                    <span className="font-semibold text-default-800 text-sm">{job.jobTitle}</span>
+                  </Table.Cell>
+                  
+                  {/* 2. Type / Category Cell */}
+                  <Table.Cell>
+                    <div className="flex flex-col gap-0.5 items-start">
+                      {/* bg color বাদ দিয়ে শুধু টেক্সট রাখা হয়েছে */}
+                      <span className="text-xs text-default-700 font-medium capitalize">
+                        {job.jobType || "N/A"}
+                      </span>
+                      <span className="text-xs text-default-400 capitalize">
+                        {job.category}
+                      </span>
                     </div>
                   </Table.Cell>
                   
-                  <Table.Cell className="capitalize text-default-600">
-                    {job.category}
+                  {/* 3. Location Cell */}
+                  <Table.Cell>
+                    {/* Remote এর জন্যেও bg color বাদ দিয়ে শুধু টেক্সট কালার দেওয়া হয়েছে */}
+                    {job.isRemote ? (
+                      <span className="text-xs text-primary font-medium">
+                        Remote
+                      </span>
+                    ) : (
+                      <span className="text-xs text-default-600 font-normal">
+                        {job.location || "On-site"}
+                      </span>
+                    )}
                   </Table.Cell>
                   
-                  <Table.Cell className="capitalize text-default-600">
-                    {job.jobType}
-                  </Table.Cell>
-                  
-                  <Table.Cell className="text-default-600">
-                    {job.minSalary && job.maxSalary 
-                      ? `${job.minSalary} - ${job.maxSalary} ${job.currency}`
-                      : "Not Specified"
-                    }
-                  </Table.Cell>
-                  
+                  {/* 4. Status Cell */}
                   <Table.Cell>
                     <Chip color={getStatusColor(job.status)} size="sm" variant="soft" className="capitalize">
                       {job.status || "Unknown"}
                     </Chip>
                   </Table.Cell>
                   
+                  {/* 5. Actions Cell */}
                   <Table.Cell>
                     <div className="flex items-center gap-1">
                       {/* View Action */}

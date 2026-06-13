@@ -1,10 +1,11 @@
+import { getLoggedInRecruiterCompany } from '@/app/lib/api/companies';
 import { getCompanyJobs } from '@/app/lib/api/jobs';
 import JobsTable from '@/components/dashboard/JobsTable';
 import React from 'react';
 
 const RecruiterJobs =async () => {
-    const companyId ="mock-company-123"
-    const jobs = await getCompanyJobs(companyId)
+    const company = await getLoggedInRecruiterCompany()
+    const jobs = await getCompanyJobs(company._id)
     console.log(jobs)
     return (
        <div className="p-6 max-w-7xl mx-auto space-y-4">

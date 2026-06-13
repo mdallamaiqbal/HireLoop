@@ -24,10 +24,11 @@ export default function CompanyProfile({ recruiter, recruiterCompany }) {
   const [isLoading, setIsLoading] = useState(false);
   const [formErrors, setFormErrors] = useState({});
   const [successMessage, setSuccessMessage] = useState("");
-  
 
-  const [registeredCompany, setRegisteredCompany] = useState(recruiterCompany);
-
+  // ডাটাবেজ থেকে যদি খালি অবজেক্ট ({}) আসে, সেটাকে null করে দেওয়া হচ্ছে যাতে ফর্ম আগে ওপেন হয়
+  const [registeredCompany, setRegisteredCompany] = useState(
+    recruiterCompany && (recruiterCompany._id || recruiterCompany.id) ? recruiterCompany : null
+  );
 
   const [formDataValues, setFormDataValues] = useState({
     companyName: "",
@@ -38,14 +39,16 @@ export default function CompanyProfile({ recruiter, recruiterCompany }) {
     description: ""
   });
 
-
   useEffect(() => {
-  if (recruiterCompany) {
-    setRegisteredCompany(recruiterCompany);
-  }
-}, [recruiterCompany]);
-
-if (!mounted) return <div>Loading Form...</div>;
+    setMounted(true);
+    if (recruiterCompany && (recruiterCompany._id || recruiterCompany.id)) {
+      setRegisteredCompany({...recruiterCompany,
+        status: recruiterCompany.status || "Pending"
+      });
+    } else {
+      setRegisteredCompany(null);
+    }
+  }, [recruiterCompany]);
 
   // Handle Logo Upload Preview
   const handleLogoChange = (e) => {
@@ -102,6 +105,7 @@ if (!mounted) return <div>Loading Form...</div>;
           throw new Error("ImgBB image upload failed.");
         }
       }
+      const currentStatus = registeredCompany?.status || recruiterCompany?.status || 'Pending';
 
       const newCompanyData = { 
         name: data.companyName, 
@@ -111,20 +115,22 @@ if (!mounted) return <div>Loading Form...</div>;
         employeeCount: data.employeeRange || "1-10", 
         description: data.description || "", 
         logo: logoUrl || (recruiterCompany ? recruiterCompany.logo : ' '), 
-        status: recruiterCompany ? recruiterCompany.status : 'Pending' ,
+        status: currentStatus,
         recruiterId: recruiter.id
       };
 
-
       const payload = await createCompany(newCompanyData);
 
-      if (payload?.insertedId || payload) {
+      if (payload?.insertedId || payload?._id || payload) {
         toast.success("Company profile saved successfully");
         setSuccessMessage("Your company has been registered successfully!");
         
+       
         setRegisteredCompany({
           ...newCompanyData,
-          id: payload.insertedId || "preview-id"
+          status: currentStatus,
+          _id: payload.insertedId || payload._id || "preview-id",
+          id: payload.insertedId || payload._id || "preview-id"
         });
         
       } else {
@@ -138,7 +144,6 @@ if (!mounted) return <div>Loading Form...</div>;
     }
   };
 
- 
   const handleEdit = () => {
     setFormDataValues({
       companyName: registeredCompany.name,
@@ -160,10 +165,14 @@ if (!mounted) return <div>Loading Form...</div>;
     );
   }
 
+
+  const hasCompany = registeredCompany && (registeredCompany._id || registeredCompany.id);
+
   return (
     <div className="min-h-screen bg-[#0d0d0e] text-zinc-100 p-4 md:p-12 flex flex-col justify-center items-center gap-8">
       
-          {!registeredCompany && (
+  
+      {!hasCompany && (
         <div className="w-full max-w-2xl bg-[#161618] border border-zinc-800 rounded-xl shadow-2xl overflow-hidden">
           
           {/* Header bar */}
@@ -280,7 +289,7 @@ if (!mounted) return <div>Loading Form...</div>;
                     required
                     aria-labelledby="company-location-lbl"
                     className="w-full bg-[#222224] text-zinc-200 border border-zinc-800 rounded-lg h-10 pl-9 pr-3 hover:border-zinc-700 focus-within:!border-zinc-500 transition-colors"
-                  />
+                />
                   <div className="absolute left-3 top-[12px] pointer-events-none text-zinc-400">
                     <MapPin width={14} height={14} />
                   </div>
@@ -385,7 +394,8 @@ if (!mounted) return <div>Loading Form...</div>;
         </div>
       )}
       
-      {registeredCompany && (
+      {/* ২. ফর্ম ফিলআপ সফল হওয়ার পর অথবা ডাটাবেজে আগে থেকে কোম্পানি থাকলে আউটপুট ডিজাইন দেখাবে */}
+      {hasCompany && (
         <div className="w-full max-w-2xl bg-[#161618] border border-zinc-800 rounded-xl p-6 shadow-xl space-y-6">
           
           {successMessage && (
