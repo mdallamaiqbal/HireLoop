@@ -2,14 +2,15 @@
 
 import React, { useState } from "react";
 import Link from "next/link";
-import { useRouter } from "next/navigation";
+import { useRouter, useSearchParams } from "next/navigation";
 import { Card, CardHeader, CardFooter, Button, Alert } from "@heroui/react";
 import { Envelope, Eye, EyeSlash, ShieldKeyhole } from "@gravity-ui/icons";
 import { authClient } from "@/app/lib/auth-client";
 
 export default function SignInPage() {
   const router = useRouter();
-
+  const searchParams=useSearchParams();
+  const redirectTo = searchParams.get('redirect') || '/'
   // Form States
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
@@ -46,15 +47,11 @@ export default function SignInPage() {
           type: "success",
           message: "Signed in successfully! Redirecting...",
         });
-
       
         setEmail("");
         setPassword("");
-
+        router.push(redirectTo);
        
-        setTimeout(() => {
-          router.push("/");
-        }, 1500);
       }
     } catch (err) {
       setStatus({ type: "danger", message: "An unexpected error occurred." });
@@ -155,7 +152,7 @@ export default function SignInPage() {
         <CardFooter className="flex justify-center border-t border-default-100 mt-4 pt-4">
           <p className="text-sm text-default-500">
             New to hireLoop?{" "}
-            <Link href="/auth/signup" className="text-primary hover:underline font-medium">
+            <Link href={`/auth/signup?redirect=${redirectTo}`} className="text-primary hover:underline font-medium">
               Sign Up
             </Link>
           </p>

@@ -79,9 +79,9 @@ export default async function JobDetailPage({ params }) {
 
             {/* বড় স্ক্রিনের জন্য Apply Now বাটন */}
             <div className="hidden sm:block">
-              <button className="bg-purple-600 hover:bg-purple-700 text-white font-semibold px-6 py-3 rounded-xl transition-all shadow-lg active:scale-95">
+              <Link  href={`/jobs/${id}/apply`} className="bg-purple-600 hover:bg-purple-700 text-white font-semibold px-6 py-3 rounded-xl transition-all shadow-lg active:scale-95">
                 Apply for this job
-              </button>
+              </Link>
             </div>
           </div>
 
@@ -164,10 +164,10 @@ export default async function JobDetailPage({ params }) {
 
           {/* মোবাইল স্ক্রিনের জন্য নিচের দিকে রেসপন্সিভ Apply Now বাটন */}
           <div className="block sm:hidden pt-4">
-            <Button color="secondary" 
-             className="w-full text-white font-semibold py-3.5 rounded-lg shadow-lg active:scale-98 text-center">
+            <Link href={`/jobs/${id}/apply`}
+            className="bg-purple-600 hover:bg-purple-700 text-white font-semibold px-6 py-3 rounded-xl transition-all shadow-lg active:scale-95">
               Apply for this job
-            </Button>
+            </Link>
           </div>
 
         </div>

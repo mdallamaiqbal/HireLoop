@@ -2,7 +2,7 @@
 
 import React, { useState } from "react";
 import Link from "next/link";
-import { useRouter } from "next/navigation";
+import { useRouter, useSearchParams } from "next/navigation";
 import { Card, CardHeader, CardFooter, Button, Alert } from "@heroui/react";
 import { Description, Label, Radio, RadioGroup } from "@heroui/react";
 import { Envelope, Eye, EyeSlash, Person, ShieldKeyhole } from "@gravity-ui/icons";
@@ -10,7 +10,8 @@ import { authClient } from "@/app/lib/auth-client";
 
 export default function SignupPage() {
   const router = useRouter();
-
+  const searchParams = useSearchParams();
+  const redirectTo = searchParams.get('redirect') || '/'
   // Form States
   const [name, setName] = useState("");
   const [email, setEmail] = useState("");
@@ -55,12 +56,9 @@ export default function SignupPage() {
         // Clear form
         setName("");
         setEmail("");
-        setPassword("");
-
-        // Redirect to dashboard or login after a brief delay
-        setTimeout(() => {
-          router.push("/");
-        }, 2000);
+        setPassword("");     
+        router.push(redirectTo);
+       
       }
     } catch (err) {
       setStatus({ type: "danger", message: "An unexpected error occurred." });
@@ -199,7 +197,7 @@ export default function SignupPage() {
         <CardFooter className="flex justify-center border-t border-default-100 mt-4 pt-4">
           <p className="text-sm text-default-500">
             Already have an account?{" "}
-            <Link href="/auth/signin" className="text-primary hover:underline font-medium">
+            <Link href={`/auth/signin?redirect=${redirectTo}`} className="text-primary hover:underline font-medium">
               Sign In
             </Link>
           </p>
