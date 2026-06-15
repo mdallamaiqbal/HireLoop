@@ -68,6 +68,7 @@ const JobApply = ({ job, applicant }) => {
       jobId: job?._id,
       jobTitle: job?.jobTitle,
       companyName: job?.companyName,
+      applicantId : applicant?.id,
       applicantName: applicant?.name,
       applicantEmail: applicant?.email,
       ...formData
