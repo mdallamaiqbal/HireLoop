@@ -6,7 +6,7 @@ import Link from 'next/link';
 export default function PricingPage() {
     // TypeScript-এর টাইপ অ্যাঙ্গেল ব্র্যাকেট (<...>) সরিয়ে দেওয়া হয়েছে
     const [userType, setUserType] = useState('seekers');
-    
+
     // টাইপ (| null) সরিয়ে দেওয়া হয়েছে
     const [openFaq, setOpenFaq] = useState(null);
 
@@ -19,6 +19,7 @@ export default function PricingPage() {
     const seekerPlans = [
         {
             name: 'Free',
+            id: 'seeker_free',
             price: '$0',
             period: 'forever',
             features: ['Browse & save up to 10 jobs', 'Apply to up to 3 jobs per month', 'Basic profile', 'Email alerts'],
@@ -27,6 +28,7 @@ export default function PricingPage() {
         },
         {
             name: 'Pro',
+            id: 'seeker_pro',
             price: '$19',
             period: 'month',
             features: ['Apply to up to 30 jobs per month', 'Unlimited saved jobs', 'Application tracking', 'Salary insights'],
@@ -35,6 +37,7 @@ export default function PricingPage() {
         },
         {
             name: 'Premium',
+            id: 'seeker_premium',
             price: '$39',
             period: 'month',
             features: ['Everything in Pro', 'Unlimited applications', 'Profile boost to recruiters', 'Early access to new jobs', 'Priority support'],
@@ -46,6 +49,7 @@ export default function PricingPage() {
     const recruiterPlans = [
         {
             name: 'Free',
+            id: 'recruiter_free',
             price: '$0',
             period: 'forever',
             features: ['Up to 3 active job posts', 'Basic applicant management', 'Standard listing visibility (great for first year)'],
@@ -54,6 +58,7 @@ export default function PricingPage() {
         },
         {
             name: 'Growth',
+             id: 'recruiter_growth',
             price: '$49',
             period: 'month',
             features: ['Up to 10 active job posts', 'Applicant tracking', 'Basic analytics', 'Email support'],
@@ -62,6 +67,7 @@ export default function PricingPage() {
         },
         {
             name: 'Enterprise',
+             id: 'recruiter_enterprise',
             price: '$149',
             period: 'month',
             features: ['Up to 50 active job posts', 'Advanced analytics dashboard', 'Featured job listings', 'Team collaboration', 'Custom branding', 'Priority support'],
@@ -94,7 +100,7 @@ export default function PricingPage() {
     return (
         <div className="w-full min-h-screen bg-zinc-900 text-zinc-100 py-16 px-4 sm:px-6 lg:px-8">
             <div className="max-w-5xl mx-auto space-y-16">
-                
+
                 {/* ১. হেডার এবং টগল বাটন সেকশন */}
                 <div className="text-center space-y-5">
                     <h1 className="text-3xl sm:text-4xl font-bold tracking-tight">
@@ -103,26 +109,24 @@ export default function PricingPage() {
                     <p className="text-zinc-400 text-sm sm:text-base max-w-md mx-auto">
                         Choose the perfect plan tailored to your career goals or recruitment scaling requirements.
                     </p>
-                    
+
                     {/* টগল ট্যাব */}
                     <div className="inline-flex p-1 bg-zinc-850 border border-zinc-800 rounded-xl max-w-xs w-full mt-4 shadow-inner">
                         <button
                             onClick={() => setUserType('seekers')}
-                            className={`flex-1 text-center py-2 text-xs font-semibold rounded-lg transition-all ${
-                                userType === 'seekers'
+                            className={`flex-1 text-center py-2 text-xs font-semibold rounded-lg transition-all ${userType === 'seekers'
                                     ? 'bg-zinc-800 text-zinc-100 shadow-md border border-zinc-750'
                                     : 'text-zinc-400 hover:text-zinc-200'
-                            }`}
+                                }`}
                         >
                             For Job Seekers
                         </button>
                         <button
                             onClick={() => setUserType('recruiters')}
-                            className={`flex-1 text-center py-2 text-xs font-semibold rounded-lg transition-all ${
-                                userType === 'recruiters'
+                            className={`flex-1 text-center py-2 text-xs font-semibold rounded-lg transition-all ${userType === 'recruiters'
                                     ? 'bg-zinc-800 text-zinc-100 shadow-md border border-zinc-750'
                                     : 'text-zinc-400 hover:text-zinc-200'
-                            }`}
+                                }`}
                         >
                             For Recruiters
                         </button>
@@ -132,18 +136,17 @@ export default function PricingPage() {
                 {/* ২. প্রাইসিং কার্ড গ্রিড সেকশন */}
                 <div className="grid grid-cols-1 md:grid-cols-3 gap-6 items-stretch">
                     {activePlans.map((plan, index) => (
-                        <div 
-                            key={index} 
-                            className={`flex flex-col bg-zinc-800 border rounded-2xl p-6 shadow-md relative transition-transform duration-200 hover:-translate-y-1 ${
-                                plan.popular ? 'border-indigo-500 ring-1 ring-indigo-500/30' : 'border-zinc-700'
-                            }`}
+                        <div
+                            key={index}
+                            className={`flex flex-col bg-zinc-800 border rounded-2xl p-6 shadow-md relative transition-transform duration-200 hover:-translate-y-1 ${plan.popular ? 'border-indigo-500 ring-1 ring-indigo-500/30' : 'border-zinc-700'
+                                }`}
                         >
                             {plan.popular && (
                                 <span className="absolute -top-3 left-1/2 -translate-x-1/2 bg-indigo-500 text-white text-[10px] font-bold uppercase tracking-widest px-3 py-1 rounded-full shadow-md">
                                     Most Popular
                                 </span>
                             )}
-                            
+
                             <div className="mb-6">
                                 <h3 className="text-zinc-400 text-xs font-semibold uppercase tracking-wider mb-1">{plan.name}</h3>
                                 <div className="flex items-baseline gap-1">
@@ -165,13 +168,20 @@ export default function PricingPage() {
                             </ul>
 
                             {/* অ্যাকশন বাটন */}
-                            <button className={`w-full text-center py-2.5 px-4 rounded-xl font-medium text-xs transition-colors shadow-sm ${
-                                plan.popular 
-                                    ? 'bg-indigo-600 hover:bg-indigo-500 text-white' 
+                            <form action="/api/checkout_sessions" method="POST">
+                                <input type="hidden" name="plan_id" value={plan.id} />
+                                <section>
+                                    <button type="submit" role="link"
+                                    className={`w-full text-center py-2.5 px-4 rounded-xl font-medium text-xs transition-colors shadow-sm ${plan.popular
+                                    ? 'bg-indigo-600 hover:bg-indigo-500 text-white'
                                     : 'bg-zinc-700 hover:bg-zinc-650 text-zinc-100 border border-zinc-600'
-                            }`}>
-                                {plan.cta}
-                            </button>
+                                }`}
+                                    >
+                                        Checkout
+                                    </button>
+                                </section>
+                            </form>
+                            
                         </div>
                     ))}
                 </div>
@@ -188,22 +198,22 @@ export default function PricingPage() {
                     <div className="space-y-3">
                         {faqs.map((faq, idx) => (
                             <div key={idx} className="bg-zinc-800 border border-zinc-700/80 rounded-xl overflow-hidden transition-colors">
-                                <button 
+                                <button
                                     onClick={() => toggleFaq(idx)}
                                     className="w-full flex items-center justify-between p-5 text-left text-sm font-semibold text-zinc-200 hover:text-zinc-100 transition-colors focus:outline-none"
                                 >
                                     <span>{faq.question}</span>
-                                    <svg 
-                                        className={`w-4 h-4 text-zinc-400 transition-transform duration-200 ${openFaq === idx ? 'rotate-180 text-zinc-200' : ''}`} 
-                                        fill="none" 
-                                        stroke="currentColor" 
-                                        viewBox="0 0 24 24" 
+                                    <svg
+                                        className={`w-4 h-4 text-zinc-400 transition-transform duration-200 ${openFaq === idx ? 'rotate-180 text-zinc-200' : ''}`}
+                                        fill="none"
+                                        stroke="currentColor"
+                                        viewBox="0 0 24 24"
                                         xmlns="http://www.w3.org/2000/svg"
                                     >
                                         <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 9l-7 7-7-7" />
                                     </svg>
                                 </button>
-                                
+
                                 <div className={`transition-all duration-200 ease-in-out ${openFaq === idx ? 'max-h-40 border-t border-zinc-750/50' : 'max-h-0 overflow-hidden'}`}>
                                     <p className="p-5 text-xs text-zinc-400 leading-relaxed bg-zinc-850/30">
                                         {faq.answer}
