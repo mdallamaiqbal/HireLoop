@@ -5,6 +5,7 @@ import React from 'react';
 import JobApply from './JobApply';
 import { getApplicationByApplicant } from '@/app/lib/api/application';
 import Link from 'next/link';
+import { getPlanById } from '@/app/lib/api/plans';
 
 const ApplyPage = async ({ params }) => {
     const { id } = await params;
@@ -41,13 +42,12 @@ const ApplyPage = async ({ params }) => {
     }
 
     const applications = await getApplicationByApplicant(user.id);
-    const plan = {
-        name: 'Free',
-        maxApplicationsPerMonth: 3
-    };
+   
+   const plan = await getPlanById(user?.plan || 'seeker_free') 
+  
     const job = await getJobById(id);
     const hasRemainingApplications = applications.length < plan.maxApplicationsPerMonth;
-
+      
     return (
         <div className="w-full min-h-screen bg-zinc-900 text-zinc-100 py-12 px-4 sm:px-6 lg:px-8">
             <div className="max-w-2xl mx-auto space-y-6">

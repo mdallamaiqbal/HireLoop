@@ -30,6 +30,8 @@ export default function SignupPage() {
     setIsLoading(true);
     setStatus({ type: "", message: "" });
 
+    const plan = role === 'seeker' ? 'seeker_free' : 'recruiter_free';
+
     // Basic client-side validation
     if (!name || !email || !password) {
       setStatus({ type: "danger", message: "Please fill in all fields." });
@@ -43,6 +45,7 @@ export default function SignupPage() {
         password,
         role,
         name,
+        plan
       });
 
       if (error) {
