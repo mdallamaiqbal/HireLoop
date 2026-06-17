@@ -38,6 +38,7 @@ const CompanyTable = ({ companies }) => {
               <Table.Column isRowHeader className="pb-3 font-medium">Company Name</Table.Column>
               <Table.Column className="pb-3 font-medium">Website</Table.Column>
               <Table.Column className="pb-3 font-medium">Industry</Table.Column>
+              <Table.Column className="pb-3 font-medium">Job Count</Table.Column>
               <Table.Column className="pb-3 font-medium">Status</Table.Column>
               <Table.Column className="pb-3 font-medium">Date Submitted</Table.Column>
               <Table.Column className="pb-3 font-medium text-right">Actions</Table.Column>
@@ -80,6 +81,11 @@ const CompanyTable = ({ companies }) => {
                     <Table.Cell className="py-4">
                       <span className="px-2.5 py-0.5 rounded-full text-xs bg-neutral-800 text-neutral-400 border border-neutral-700/60">
                         {company.industry}
+                      </span>
+                    </Table.Cell>
+                    <Table.Cell className="py-4">
+                      <span className="px-2.5 py-0.5 rounded-full text-xs bg-neutral-800 text-neutral-400 border border-neutral-700/60">
+                        {company.jobCounts}
                       </span>
                     </Table.Cell>
 
