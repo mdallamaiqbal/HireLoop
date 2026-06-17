@@ -60,8 +60,7 @@ export default function SignupPage() {
         setName("");
         setEmail("");
         setPassword("");     
-        router.push(redirectTo);
-       
+       window.location.href = redirectTo;
       }
     } catch (err) {
       setStatus({ type: "danger", message: "An unexpected error occurred." });

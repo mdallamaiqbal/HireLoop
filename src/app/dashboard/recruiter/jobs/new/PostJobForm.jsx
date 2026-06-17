@@ -109,7 +109,7 @@ const canPostJob = isApproved && (company?.jobsUsed || 0) < (company?.jobsLimit 
               Company: <span className="text-zinc-200 font-semibold">{company.name}</span>
             </div>
             <div className="mt-1">
-              Usage: <span className="text-white font-bold">{company.jobsUsed}</span> / {company.jobsLimit} Jobs ({company.plan} Plan)
+              Job Status: <span className="font-bold text-yellow-400">{company.status}</span> 
             </div>
           </div>
         </div>
@@ -132,9 +132,9 @@ const canPostJob = isApproved && (company?.jobsUsed || 0) < (company?.jobsLimit 
             {formErrors.global}
           </Alert>
         )}
-
+        {company.status !=='Approved' && <div> Please wait to get approval </div>}
         {/* Core Form Component */}
-        <Form onSubmit={handleSubmit} validationBehavior="native" className="space-y-8">
+       {company.status === 'Approved' && <Form onSubmit={handleSubmit} validationBehavior="native" className="space-y-8">
           
           {/* SECTION 1: JOB INFO */}
           <fieldset className="border border-zinc-800 rounded-xl p-6 bg-[#1a1a1c]/50 space-y-6 w-full">
@@ -409,7 +409,7 @@ const canPostJob = isApproved && (company?.jobsUsed || 0) < (company?.jobsLimit 
             </Button>
           </div>
 
-        </Form>
+        </Form>}
       </div>
     </div>
   );

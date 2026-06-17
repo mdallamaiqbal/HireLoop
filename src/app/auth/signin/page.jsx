@@ -50,7 +50,7 @@ export default function SignInPage() {
       
         setEmail("");
         setPassword("");
-        router.push(redirectTo);
+        window.location.href = redirectTo;
        
       }
     } catch (err) {

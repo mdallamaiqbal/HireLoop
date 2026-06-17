@@ -7,7 +7,7 @@ import { signOut, useSession } from "@/app/lib/auth-client";
 
 export default function Navbar() {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
-  const {data:session, isPending} = useSession();
+  const {data:session} = useSession();
   const user = session?.user;
   const handleSignout = async ()=>{
    await signOut();
@@ -30,6 +30,19 @@ export default function Navbar() {
       href: "/plans",
     },
   ];
+  const dashboardLinks={
+    seeker: '/dashboard/seeker',
+    recruiter: '/dashboard/recruiter',
+    admin: '/dashboard/admin'
+  }
+  if(user?.email){
+    links.push(
+      {
+        label: 'Dashboard',
+        href: dashboardLinks[user?.role || 'seeker']
+      }
+    )
+  }
 
   return (
     <nav className="sticky top-0 z-50 px-4 py-4">
